@@ -1,0 +1,46 @@
+<%- include("../partials/header.ejs") %>
+    <main>
+        <div class="container">
+            <% if(locals.book) { %>
+                <div class="col border p-3">
+                    <div class="row">
+                        <div class="col-2">
+                            <% if (locals.book.volumeInfo.imageLinks) { %>
+                                <img src=<%=locals.book.volumeInfo.imageLinks.thumbnail %> class="img-thumbnail"
+                                alt="...">
+                                <% } else { %>
+                                    <img src="/images/book_default.png" class="card-img-top" alt="...">
+                                    <% } %>
+                        </div>
+                        <div class="col-9">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= locals.book.volumeInfo.title %>
+                                </h5>
+                                <p class="card-text">
+                                    <% if (locals.book.volumeInfo.authors) { %>
+                                        <% locals.book.volumeInfo.authors.forEach(author=> { %>
+                                            <%= author %>,
+                                                <% }); %>
+                                                    <% } %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form action=<%="/note/create/" + locals.book.id %> method="POST">
+                    <div class="my-3">
+                        <input type="text" class="form-control" name="title" placeholder="Title">
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" name="content" rows="10" maxlength="1000"
+                            placeholder="Write your comments here..."></textarea>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <input class="btn btn-primary" type="submit" value="Create"/>
+                    </div>
+                </form>
+                <% }; %>
+        </div>
+    </main>
+    <%- include("../partials/footer.ejs") %>

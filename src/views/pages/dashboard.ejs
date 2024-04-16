@@ -1,0 +1,57 @@
+<%- include("../partials/header.ejs") %>
+    <main>
+        <div class="container">
+            <div class="d-flex justify-content-between border-bottom">
+                <h2>Your Notes</h2>
+                <a href="/note/create">
+                    <button class="btn btn-secondary">Create New</button>
+                </a>
+            </div>
+            <% if(locals.userNotes) { %>
+                <div class="row row-cols-1 mt-3">
+                    <% locals.userNotes.forEach(note=> { %>
+                        <div class="col border p-3 mb-3">
+                            <div class="row">
+                                <div class="col-2 d-flex justify-content-center align-items-center border ms-3">
+                                    <% if (note.image) { %>
+                                        <img src=<%=note.image %> class="img-thumbnail border-0"
+                                        alt="...">
+                                        <% } else { %>
+                                            <img src="/images/book_default.png" class="img-thumbnail border-0"
+                                                alt="...">
+                                            <% } %>
+                                </div>
+                                <div class="col-9 position-relative">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= note.title %>
+                                        </h5>
+                                        <p class="card-text text-secondary">
+                                            <%= note.bookName %> -
+                                                <% if (note.authors) { %>
+                                                    <% note.authors.forEach(author=> { %>
+                                                        <%= author %>,
+                                                            <% }); %>
+                                                                <% } %>
+                                        </p>
+                                        <hr />
+                                        <p>
+                                            <%= note.content.substring(0, 250) %>...
+                                        </p>
+                                        <p class="position-absolute bottom-0 start-30 text-secondary">
+                                            <%= note.createdAt %>
+                                        </p>
+                                        <a href=<%="#" + note.id %> class="btn
+                                            btn-primary position-absolute bottom-0 end-0">See More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                            </ul>
+                            <% } %>
+                </div>
+        </div>
+
+    </main>
+    <%- include("../partials/footer.ejs") %>

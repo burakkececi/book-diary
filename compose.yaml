@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: app
+    build: .
+    image: app1
+    ports:
+      - $APP_PORT:$APP_PORT
+    environment:
+      - PG_HOST=$PG_HOST
+      - PG_USER=$PG_USER
+      - PG_PASSWORD=$PG_PASSWORD
+      - PG_DB=$PG_DB
+    depends_on:
+      - appDB
+    restart: always
+    env_file: ./.env
+    stdin_open: true
+    tty: true
+
+  appDB:
+    container_name: appDB
+    image: postgres:16
+    ports:
+      - $PG_PORT:$DOCKER_PG_PORT
+    environment:
+      - POSTGRES_USER=$PG_USER
+      - POSTGRES_PASSWORD=$PG_PASSWORD
+      - POSTGRES_DB=$PG_DB
+    restart: always
+    env_file: ./.env
+
+    volumes:
+      - appDB_data:/var/lib/postgres
+volumes:
+  appDB_data: {}

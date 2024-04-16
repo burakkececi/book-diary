@@ -1,0 +1,29 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS notes;
+
+CREATE TABLE users (
+	user_id SERIAL PRIMARY KEY, 
+	username VARCHAR (50) UNIQUE NOT NULL, 
+ 	password VARCHAR (50) NOT NULL, 
+  	email VARCHAR (255) UNIQUE NOT NULL, 
+  	created_at TIMESTAMP NOT NULL DEFAULT NOW(), 
+  	last_login TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE notes (
+	note_id SERIAL PRIMARY KEY,
+	user_id INT REFERENCES users (user_id),
+	book_id INT NOT NULL,
+	title VARCHAR(250) NOT NULL,
+	content VARCHAR(800) NOT NULL,
+	created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+	modified_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.modified_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
